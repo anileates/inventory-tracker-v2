@@ -25,6 +25,9 @@ const getProduct = asyncErrorWrapper(async (req, res, next) => {
     const product = await prisma.product.findUnique({
         where: {
             code: productCode.toString()
+        },
+        include: {
+            category: true
         }
     })
 
@@ -62,7 +65,7 @@ const deleteProduct = asyncErrorWrapper(async (req, res, next) => {
 
     return res.status(200).json({
         success: true,
-        message: `❌Product has been deleted`
+        message: `Product has been deleted`
     })
 })
 

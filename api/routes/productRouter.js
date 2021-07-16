@@ -9,4 +9,6 @@ productRouter.get('/:productCode', getProduct)
 productRouter.put('/:productCode', updateProduct)
 productRouter.delete('/:productCode', deleteProduct)
 
+
+
 module.exports = productRouter;
