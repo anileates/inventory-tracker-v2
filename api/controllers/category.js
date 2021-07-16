@@ -57,9 +57,23 @@ const deleteCategory = asyncErrorWrapper(async (req, res, next) => {
     })
 })
 
+const getAllProductsByCategory = asyncErrorWrapper(async (req, res, next) => {
+    const categoryId = req.params.categoryId
+
+    const products = await prisma.product.findMany({
+        where: { categoryId: parseInt(categoryId) }
+    })
+
+    return res.status(200).json({
+        success: true,
+        products
+    })
+})
+
 module.exports = {
     addNewCategory,
     getAllCategories,
     updateCategory,
-    deleteCategory
+    deleteCategory,
+    getAllProductsByCategory
 }
