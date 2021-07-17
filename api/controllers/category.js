@@ -32,7 +32,7 @@ const getAllCategories = asyncErrorWrapper(async (req, res, next) => {
 const updateCategory = asyncErrorWrapper(async (req, res, next) => {
     const categoryId = req.params.categoryId
     const { name } = req.body
-    
+
     const updatedCategory = await prisma.category.update({
         where: { id: parseInt(categoryId) },
         data: { name }
@@ -60,13 +60,42 @@ const deleteCategory = asyncErrorWrapper(async (req, res, next) => {
 const getAllProductsByCategory = asyncErrorWrapper(async (req, res, next) => {
     const categoryId = req.params.categoryId
 
-    const products = await prisma.product.findMany({
+    // //Pagination
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+
+    const startIndex = (page - 1) * limit;
+    const endIndex = page * limit;
+    const pagination = {};
+
+    const totalProductCount = await prisma.product.count({
         where: { categoryId: parseInt(categoryId) }
     })
 
+    if (startIndex > 0) {
+        pagination.previous = {
+            page: page - 1,
+            limit: limit
+        }
+    }
+
+    if (endIndex < totalProductCount) {
+        pagination.next = {
+            page: page + 1,
+            limit: limit
+        }
+    }
+
+    const products = await prisma.product.findMany({
+        skip: startIndex,
+        take: limit,
+        where: { categoryId: parseInt(categoryId) }
+    })
+   
     return res.status(200).json({
         success: true,
-        products
+        products,
+        pagination
     })
 })
 
