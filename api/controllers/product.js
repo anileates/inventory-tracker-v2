@@ -1,5 +1,6 @@
 const asyncErrorWrapper = require('express-async-handler')
 const prisma = require('../../prisma/myPrisma')
+const { search } = require('../routes/productRouter')
 
 const addNewProduct = asyncErrorWrapper(async (req, res, next) => {
     const { categoryId, name, stock, unitPrice } = req.body
@@ -69,9 +70,28 @@ const deleteProduct = asyncErrorWrapper(async (req, res, next) => {
     })
 })
 
+const searchProduct = asyncErrorWrapper(async (req, res, next) => {
+   const searchKey = req.query.search.trim()
+   console.log(searchKey)
+
+   const products = await prisma.product.findMany({
+       where: {
+           name: {
+               contains: searchKey
+           }
+       }
+   })
+
+    return res.status(200).json({
+        success: true,
+        products
+    })
+})
+
 module.exports = {
     addNewProduct,
     getProduct,
     updateProduct,
-    deleteProduct
+    deleteProduct,
+    searchProduct
 }
