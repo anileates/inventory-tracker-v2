@@ -70,16 +70,21 @@ const deleteProduct = asyncErrorWrapper(async (req, res, next) => {
     })
 })
 
-const searchProduct = asyncErrorWrapper(async (req, res, next) => {
-   const searchKey = req.query.search.trim()
+const getAllOrSearchProduct = asyncErrorWrapper(async (req, res, next) => {
+    let products = []
+    if(req.query && req.query.search){
+        const searchKey = req.query.search.trim()
 
-   const products = await prisma.product.findMany({
-       where: {
-           name: {
-               contains: searchKey
-           }
-       }
-   })
+        products = await prisma.product.findMany({
+            where: {
+                name: {
+                    contains: searchKey
+                }
+            }
+        })
+    }else{
+        products = await prisma.product.findMany();
+    }
 
     return res.status(200).json({
         success: true,
@@ -92,5 +97,5 @@ module.exports = {
     getProduct,
     updateProduct,
     deleteProduct,
-    searchProduct
+    getAllOrSearchProduct
 }

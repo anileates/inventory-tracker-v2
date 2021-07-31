@@ -9,7 +9,7 @@ app.use(express.json());
 app.use('/api/v1', indexRouter);
 app.use(customErrorHandler)
 
-const PORT = process.env.PORT || 8081
+const PORT = process.env.PORT || 8080
 app.listen(PORT, () => {
     console.log(`App is running on ${PORT}`)
 })
