@@ -9,6 +9,7 @@ app.use(express.json());
 app.use('/api/v1', indexRouter);
 app.use(customErrorHandler)
 
-app.listen(3000, () => {
-    console.log('App is running on 3000')
+const PORT = process.env.PORT || 8081
+app.listen(PORT, () => {
+    console.log(`App is running on ${PORT}`)
 })

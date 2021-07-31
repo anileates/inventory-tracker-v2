@@ -72,7 +72,6 @@ const deleteProduct = asyncErrorWrapper(async (req, res, next) => {
 
 const searchProduct = asyncErrorWrapper(async (req, res, next) => {
    const searchKey = req.query.search.trim()
-   console.log(searchKey)
 
    const products = await prisma.product.findMany({
        where: {

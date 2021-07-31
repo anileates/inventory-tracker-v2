@@ -1,0 +1,144 @@
+<template>
+  <div class="container">
+    <div class="loading" :style="isLoading">
+      <div class="lds-ripple">
+        <div></div>
+        <div></div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-6 offset-3 pt-3 card mt-5 shadow">
+        <div class="card-body">
+          <h3>Ürün Çıkışı</h3>
+          <hr>
+          <div class="form-group">
+            <label>Ürün Adı</label>
+            <select class="form-control" v-model="selectedProduct" @change="selectProduct">
+              <option value="" disabled selected>Bir ürün seçin...</option>
+              <option
+                v-for="product in getProducts"
+                :disabled="product.count == 0"
+                :value="product.key"
+                v-if="product.title"
+              >{{ product.title }}
+              </option>
+            </select>
+          </div>
+
+          <transition name="fade" mode="out-in">
+            <div class="card mb-2 border border-danger" v-if="product !== null">
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-12 text-center">
+                    <div class="mb-3">
+                      <span class="badge badge-info">Stok: {{ product.count }}</span>
+                      <span class="badge badge-primary">Fiyat: {{ product.price | currency }}</span>
+                    </div>
+                    <p class="border border-warning p-2 text-secondary">
+                      {{ product.description }}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </transition>
+
+          <form class="form-group needs-validation" novalidate>
+            <div class="invalid">
+              <label for="validationCustom03" class="form-label">Adet</label>
+              <input type="text" :class="isAmountValid" id="validationCustom03" v-model="amount"
+                     placeholder="Ürün adetini giriniz.." required>
+              <div class="invalid-feedback">
+                Yetersiz stok!
+              </div>
+            </div>
+          </form>
+          <hr>
+          <button class="btn btn-primary" :disabled="saveEnabled" @click="sellProduct">Kaydet</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+import {mapGetters} from "vuex";
+
+export default {
+  name: "ProductSell",
+  data() {
+    return {
+      selectedProduct: null,
+      product: null,
+      amount: null,
+      isSaveButtonClicked: false
+    }
+  },
+  computed: {
+    ...mapGetters(['getProducts']),
+    isLoading() {
+      if (this.isSaveButtonClicked) {
+        return {
+          display: "block"
+        }
+      } else {
+        return {
+          display: "none"
+        }
+      }
+    },
+    saveEnabled() {
+      if (this.selectedProduct !== null && parseInt(this.amount) > 0) {
+        return parseInt(this.amount) > parseInt(this.product.count)
+      } else {
+        return true
+      }
+    },
+    isAmountValid() {
+      if (!this.product || !this.amount) {// default
+        return {
+          'form-control': true
+        }
+      } else {
+        return {
+          'form-control': (parseInt(this.amount) <= parseInt(this.product.count)),
+          'form-control is-invalid': (parseInt(this.amount) > parseInt(this.product.count))
+        }
+      }
+    }
+  },
+  methods: {
+    selectProduct() {
+      this.product = this.$store.getters.getProduct(this.selectedProduct)[0]
+    },
+    sellProduct() {
+      this.isSaveButtonClicked = true
+      let product = {
+        key: this.selectedProduct,
+        count: this.amount
+      }
+
+      this.$store.dispatch('sellProduct', product)
+    }
+  },
+  beforeRouteLeave(to, from, next) {
+    if ((this.selectedProduct !== null || this.amount > 0) && this.saveButtonClicked) {
+      if (confirm('Kaydedilmemiş değişiklikler var. Yine de çıkmak istiyor musunuz?')) {
+        next()
+      } else {
+        next(false)
+      }
+    } else {
+      next()
+    }
+  }
+}
+
+</script>
+
+<style scoped>
+.border-danger {
+  border-style: dashed !important;
+}
+</style>
