@@ -1,5 +1,5 @@
 <template>
-  <nav class="navbar fixed-bottom  navbar-light" style="background-color: #e3f2fd;">
+  <nav class="navbar fixed-bottom  navbar-light" style="background-color: #e3f2fd; ">
     <span class="navbar-text mr-auto">
         <strong>Anıl Erdem Ateş</strong> | Design is inspired by 👉 <a href="https://www.udemy.com/course/sifirdan-ileri-seviye-vuejs-2-vuex-vue-router-egitim-seti/">Here</a>
     </span>

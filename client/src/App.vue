@@ -12,6 +12,10 @@
 import Header from "./components/shared/Header";
 import Footer from "./components/shared/Footer";
 
+/* TODO: Ürün Adı kısmı, 'Ürün Adı veya Id' olarak değişecek
+         -Eğer ID girildiyse mevcut ürün üzerinde güncelleme yapılacak
+**/
+
 export default {
   components: {
     appHeader: Header,

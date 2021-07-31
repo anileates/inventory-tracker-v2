@@ -24,8 +24,12 @@
             <input v-model="product.price" type="number" class="form-control" placeholder="Ürün fiyatı giriniz..">
           </div>
           <div class="form-group">
+            <label>Image Url</label>
+            <input v-model="product.price" type="url" class="form-control" placeholder="Bir fotoğraf adresi girin...">
+          </div>
+          <div class="form-group">
             <label>Açıklama</label>
-            <textarea cols="30" rows="5" placeholder="Ürüne ait bir açıklama giriniz..."
+            <textarea cols="30" rows="2" placeholder="Ürüne ait bir açıklama giriniz..."
                       v-model="product.description" class="form-control"></textarea>
           </div>
           <hr>

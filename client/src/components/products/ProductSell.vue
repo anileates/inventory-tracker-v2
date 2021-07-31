@@ -38,6 +38,12 @@
                     <p class="border border-warning p-2 text-secondary">
                       {{ product.description }}
                     </p>
+                    <div class="border border-warning p-2 text-secondary" v-if="product.imageUrl">
+                      <img :src="product.imageUrl" width="80%" height="80%">
+                    </div>
+                    <div v-else>
+                      No Image
+                    </div>
                   </div>
                 </div>
               </div>
