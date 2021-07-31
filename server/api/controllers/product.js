@@ -3,14 +3,16 @@ const prisma = require('../../prisma/myPrisma')
 const { search } = require('../routes/productRouter')
 
 const addNewProduct = asyncErrorWrapper(async (req, res, next) => {
-    const { categoryId, name, stock, unitPrice } = req.body
+    const { categoryId, name, stock, unitPrice, description, imageUrl } = req.body
 
     const productCreated = await prisma.product.create({
         data: {
             name,
             categoryId,
             stock,
-            unitPrice
+            unitPrice,
+            description,
+            imageUrl
         }
     })
 

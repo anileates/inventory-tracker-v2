@@ -18,6 +18,8 @@ model Product {
   name       String
   stock      Int
   unitPrice  Float
+  description String
+  imageUrl String
 }
 
 model Category {
