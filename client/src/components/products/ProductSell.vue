@@ -18,7 +18,7 @@
               <option value="" disabled selected>Bir ürün seçin...</option>
               <option
                 v-for="product in getProducts"
-                :disabled="product.count == 0"
+                :disabled="product.stock == 0"
                 :value="product.key"
                 v-if="product.title"
               >{{ product.title }}
@@ -32,8 +32,8 @@
                 <div class="row">
                   <div class="col-12 text-center">
                     <div class="mb-3">
-                      <span class="badge badge-info">Stok: {{ product.count }}</span>
-                      <span class="badge badge-primary">Fiyat: {{ product.price | currency }}</span>
+                      <span class="badge badge-info">Stok: {{ product.stock }}</span>
+                      <span class="badge badge-primary">Fiyat: {{ product.unitPrice | currency }}</span>
                     </div>
                     <p class="border border-warning p-2 text-secondary">
                       {{ product.description }}

@@ -5,6 +5,7 @@ const customErrorHandler = (err, req, res, next) => {
     let customError = err;
 
     console.log(`🔥 ${err}`)
+    console.log(`🔥 ${err.code}`)
 
     if (err.name === 'SyntaxError') {
         customError = new CustomError('Unexpected Syntax', 400);
@@ -12,6 +13,8 @@ const customErrorHandler = (err, req, res, next) => {
         customError = new CustomError('There is no record with that id', 400)
     } else if (err instanceof Prisma.PrismaClientValidationError) {
         customError = new CustomError('Unknown places detected. Check your inputs.', 400)
+    }else if (err.code === 'P2003'){
+        customError = new CustomError('There is no category with that id', 400)
     }
 
     res.status(customError.status || 500).json({

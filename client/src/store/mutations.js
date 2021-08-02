@@ -3,7 +3,7 @@ export const updateTradeResults = (state, payload) => {
         state.purchase += parseFloat(payload.purchase) * parseInt(payload.count)
         state.sale += parseFloat(payload.sale) * parseInt(payload.count)
     }else{
-        state.purchase += parseFloat(payload.purchase) 
+        state.purchase += parseFloat(payload.purchase)
         state.sale += parseFloat(payload.sale)
     }
 

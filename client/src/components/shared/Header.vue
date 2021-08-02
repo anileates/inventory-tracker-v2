@@ -10,7 +10,7 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav mr-auto">
         <router-link active-class="active" to="/urun-islemleri" tag='li' class="nav-item">
-          <a class="nav-link" href="#">Ürün İşlemleri</a>
+          <a class="nav-link" href="#">Ürün Ekle</a>
         </router-link>
 
         <router-link active-class="active" to="/urun-cikisi" tag='li' class="nav-item">

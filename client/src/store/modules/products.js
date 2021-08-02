@@ -1,5 +1,6 @@
 import Vue from "vue";
 import {router} from "../../router";
+import {myToast} from "../../myToast";
 
 const state = {
   products: []
@@ -26,40 +27,31 @@ const mutations = {
 // Actions ise async çalışır yani dışarıyla ilgili işi yapar ve mutationları tetikler.
 const actions = {
   initApp({commit}) {
-    Vue.http.get('https://vue-product-c82ad-default-rtdb.europe-west1.firebasedatabase.app/products.json')
+    Vue.http.get('http://localhost:8080/api/v1/products')
       .then(response => {
-        let data = response.body
-        for (let key in data) {
-          data[key].key = key
-          commit('updateProductList', data[key])
+        let products = response.body.products
+
+        for (let i = 0; i < products.length; i++) {
+          commit('updateProductList', products[i])
         }
       })
-
-
   },
+
   saveProduct({dispatch, commit, state}, product) {
-    Vue.http.post("https://vue-product-c82ad-default-rtdb.europe-west1.firebasedatabase.app/products.json", product)
+    Vue.http.post("http://localhost:8080/api/v1/products/", product)
       .then((res) => {
-        // Urun listesinin guncellenmesi
-        product.key = res.body.name
+        product.key = res.body.productCreated
         commit('updateProductList', product)
-
-        // Alis-satis tutarlarinin guncellenmesi
-        let tradeResult = {
-          purchase: product.price,
-          sale: 0,
-          count: product.count
-        }
-
-        dispatch('setTradeResult', tradeResult)
         router.replace('/')
-
-
-      })
+      }).catch(err => {
+        router.replace('/')
+        myToast.fire({
+          icon: 'error',
+          title: 'Category not found. Try another category.'
+        })
+    })
   },
   sellProduct({state, commit, dispatch}, payload) {
-
-    //pass by reference
     let product = state.products.filter(element => {
       return element.key == payload.key
     })
@@ -78,9 +70,7 @@ const actions = {
           dispatch('setTradeResult', tradeResult)
           router.replace('/')
         })
-
     }
-
   }
 }
 

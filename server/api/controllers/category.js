@@ -1,8 +1,5 @@
 const { Prisma } = require('@prisma/client')
 const asyncErrorWrapper = require('express-async-handler')
-// const { PrismaClient } = require('@prisma/client')
-// const prisma = new PrismaClient();
-
 const prisma = require('../../prisma/myPrisma')
 
 const addNewCategory = asyncErrorWrapper(async (req, res, next) => {

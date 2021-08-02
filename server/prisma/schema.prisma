@@ -27,3 +27,9 @@ model Category {
   name     String
   products Product[]
 }
+
+model TradeResult {
+  id       Int       @id  @default(autoincrement())
+  sale     Float
+  purchase Float
+}

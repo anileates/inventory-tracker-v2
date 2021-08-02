@@ -1,16 +1,13 @@
 import Vue from "vue"
 
 export const setTradeResult = ({ state, commit }, tradeResult) => {
-    console.log('--- tradeResult 👉' , tradeResult)
-
     commit('updateTradeResults', tradeResult)
     let tradeData = {
         purchase: state.purchase,
         sale: state.sale
     }
-    console.log('--- Actıona geri döndü 👉' , tradeData)
 
-    Vue.http.put('https://vue-product-c82ad-default-rtdb.europe-west1.firebasedatabase.app/trade-result.json', tradeData)
+    Vue.http.put('http://localhost:8080/api/v1/tradeResults/', tradeData)
     .then(res => {
         console.log(res)
     })

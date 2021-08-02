@@ -16,11 +16,11 @@
             </thead>
             <tbody>
             <tr v-for="product in getProducts">
-              <td class="align-middle text-center"><span class="badge badge-info">{{ product.key }}</span></td>
-              <td class="align-middle text-center">Electronic</td>
-              <td class="align-middle text-center">{{ product.title }}</td>
-              <td class="align-middle text-center" :class="getStockAlert(product.count)">{{ product.count }}</td>
-              <td style="width: 120px;">{{ product.price | currency }}</td>
+              <td class="align-middle text-center"><span class="badge badge-info">{{ product.code }}</span></td>
+              <td class="align-middle text-center">{{ product.categoryId }}</td>
+              <td class="align-middle text-center">{{ product.name }}</td>
+              <td class="align-middle text-center" :class="getStockAlert(product.stock)">{{ product.stock }}</td>
+              <td style="width: 120px;">{{ product.unitPrice | currency }}</td>
               <td class="align-middle">{{ product.description }}</td>
             </tr>
             </tbody>
@@ -39,11 +39,13 @@
 
 <script>
 import {mapGetters} from 'vuex'
+import {getAlertMessage} from "../../store/getters";
+
 
 export default {
   name: "ProductList",
   computed: {
-    ...mapGetters(['getProducts'])
+    ...mapGetters(['getProducts']),
   },
   methods: {
     // Computed'lara parametre vermediğimiz için metod olarak yaptık.
