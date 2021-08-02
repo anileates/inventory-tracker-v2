@@ -17,7 +17,7 @@
             <tbody>
             <tr v-for="product in getProducts">
               <td class="align-middle text-center"><span class="badge badge-info">{{ product.code }}</span></td>
-              <td class="align-middle text-center">{{ product.categoryId }}</td>
+              <td class="align-middle text-center">{{ product.category.name }}</td>
               <td class="align-middle text-center">{{ product.name }}</td>
               <td class="align-middle text-center" :class="getStockAlert(product.stock)">{{ product.stock }}</td>
               <td style="width: 120px;">{{ product.unitPrice | currency }}</td>

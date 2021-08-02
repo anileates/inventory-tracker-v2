@@ -1,10 +1,10 @@
 const asyncErrorWrapper = require('express-async-handler')
 const prisma = require('../../prisma/myPrisma')
-const { search } = require('../routes/productRouter')
+const {search} = require('../routes/productRouter')
 
 const addNewProduct = asyncErrorWrapper(async (req, res, next) => {
-    const { categoryId, name, stock, unitPrice, description, imageUrl } = req.body
-   
+    const {categoryId, name, stock, unitPrice, description, imageUrl} = req.body
+
     const productCreated = await prisma.product.create({
         data: {
             name,
@@ -23,7 +23,7 @@ const addNewProduct = asyncErrorWrapper(async (req, res, next) => {
 })
 
 const getProduct = asyncErrorWrapper(async (req, res, next) => {
-    const { productCode } = req.params
+    const {productCode} = req.params
 
     const product = await prisma.product.findUnique({
         where: {
@@ -41,7 +41,7 @@ const getProduct = asyncErrorWrapper(async (req, res, next) => {
 })
 
 const updateProduct = asyncErrorWrapper(async (req, res, next) => {
-    const { productCode } = req.params
+    const {productCode} = req.params
 
     const product = await prisma.product.update({
         where: {
@@ -58,7 +58,7 @@ const updateProduct = asyncErrorWrapper(async (req, res, next) => {
 })
 
 const deleteProduct = asyncErrorWrapper(async (req, res, next) => {
-    const { productCode } = req.params
+    const {productCode} = req.params
 
     await prisma.product.delete({
         where: {
@@ -74,7 +74,7 @@ const deleteProduct = asyncErrorWrapper(async (req, res, next) => {
 
 const getAllOrSearchProduct = asyncErrorWrapper(async (req, res, next) => {
     let products = []
-    if(req.query && req.query.search){
+    if (req.query && req.query.search) {
         const searchKey = req.query.search.trim()
 
         products = await prisma.product.findMany({
@@ -82,10 +82,17 @@ const getAllOrSearchProduct = asyncErrorWrapper(async (req, res, next) => {
                 name: {
                     contains: searchKey
                 }
+            },
+            include: {
+                category: true
             }
         })
-    }else{
-        products = await prisma.product.findMany();
+    } else {
+        products = await prisma.product.findMany({
+            include: {
+                category: true
+            }
+        });
     }
 
     return res.status(200).json({
