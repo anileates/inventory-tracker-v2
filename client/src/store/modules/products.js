@@ -43,11 +43,15 @@ const actions = {
         product.code = res.body.productCreated.code
         commit('updateProductList', product)
         router.replace('/')
+        myToast.fire({
+          icon: 'success',
+          title: 'Product succesfully added.'
+        })
       }).catch(err => {
         router.replace('/')
         myToast.fire({
           icon: 'error',
-          title: 'Category not found. Try another category.'
+          title: 'Something went wrong. Please try again.'
         })
     })
   },
