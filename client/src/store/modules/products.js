@@ -40,7 +40,7 @@ const actions = {
   saveProduct({dispatch, commit, state}, product) {
     Vue.http.post("http://localhost:8080/api/v1/products/", product)
       .then((res) => {
-        product.key = res.body.productCreated
+        product.code = res.body.productCreated.code
         commit('updateProductList', product)
         router.replace('/')
       }).catch(err => {
