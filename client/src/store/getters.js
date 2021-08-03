@@ -5,9 +5,3 @@ export const getTradeResults = (state) => {
     balance: state.balance
   }
 }
-
-export const getAlertMessage = state => {
-  return {
-    msg: state.msg
-  }
-}

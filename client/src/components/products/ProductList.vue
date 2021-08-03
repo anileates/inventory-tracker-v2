@@ -45,7 +45,7 @@ import {getAlertMessage} from "../../store/getters";
 export default {
   name: "ProductList",
   computed: {
-    ...mapGetters(['getProducts']),
+    ...mapGetters(['getProducts'])
   },
   methods: {
     // Computed'lara parametre vermediğimiz için metod olarak yaptık.
@@ -55,6 +55,8 @@ export default {
         'btn-success text-white': count > 0
       }
     }
+  },
+  created(){
   }
 }
 </script>

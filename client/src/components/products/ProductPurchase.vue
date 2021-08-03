@@ -17,7 +17,14 @@
           </div>
           <div class="form-group">
             <label>Category ID</label>
-            <input v-model="product.categoryId" type="text" class="form-control" placeholder="Enter A Category Id">
+
+            <select v-model="product.category" class="form-control">
+              <option v-for="category in getAllCategories" :value="category">{{ category.id }} - {{
+                  category.name
+                }}
+              </option>
+            </select>
+
           </div>
           <div class="form-group">
             <label>Count</label>
@@ -45,6 +52,8 @@
 </template>
 
 <script>
+import {mapGetters} from 'vuex'
+
 export default {
   name: "ProductPurchase",
   data() {
@@ -55,6 +64,7 @@ export default {
         unitPrice: null,
         description: '',
         categoryId: null,
+        category: null,
         imageUrl: null,
         code: null
       },
@@ -64,10 +74,12 @@ export default {
   methods: {
     saveProduct() {
       this.isSaveButtonClicked = true
+      this.product.categoryId = this.product.category.id
       this.$store.dispatch('saveProduct', this.product)
     }
   },
   computed: {
+    ...mapGetters(['getAllCategories']),
     saveEnabled() {
       if (this.product.name.length > 0 && this.product.stock > 0 && this.product.unitPrice >= 0 && this.product.description.length > 0) {
         return false
@@ -85,7 +97,7 @@ export default {
           display: "none"
         }
       }
-    },
+    }
   },
   beforeRouteLeave(to, from, next) {
     if ((this.product.name.length > 0 || this.product.stock > 0 || this.product.unitPrice > 0 || this.product.description.length > 0) && !this.isSaveButtonClicked) {
@@ -97,7 +109,7 @@ export default {
     } else {
       next()
     }
-  }
+  },
 }
 
 </script>

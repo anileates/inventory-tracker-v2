@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import product from './modules/products'
+import category from './modules/categories'
 
 import * as getters from './getters'
 import * as mutations from './mutations'
@@ -18,6 +19,7 @@ export const store = new Vuex.Store({
   mutations,
   actions,
   modules: {
-    product
+    product,
+    category
   }
 })

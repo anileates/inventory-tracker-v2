@@ -51,27 +51,27 @@ const actions = {
         })
     })
   },
-  sellProduct({state, commit, dispatch}, payload) {
-    let product = state.products.filter(element => {
-      return element.key == payload.key
-    })
-
-    if (product) {
-      let totalCount = product[0].count - payload.count
-      Vue.http.patch('https://vue-product-c82ad-default-rtdb.europe-west1.firebasedatabase.app/products/' + payload.key + '.json', {count: totalCount})
-        .then(res => {
-          product[0].count = totalCount
-          let tradeResult = {
-            purchase: 0,
-            sale: product[0].price,
-            count: payload.count
-          }
-
-          dispatch('setTradeResult', tradeResult)
-          router.replace('/')
-        })
-    }
-  }
+  // sellProduct({state, commit, dispatch}, payload) {
+  //   let product = state.products.filter(element => {
+  //     return element.key == payload.key
+  //   })
+  //
+  //   if (product) {
+  //     let totalCount = product[0].count - payload.count
+  //     Vue.http.patch('https://vue-product-c82ad-default-rtdb.europe-west1.firebasedatabase.app/products/' + payload.key + '.json', {count: totalCount})
+  //       .then(res => {
+  //         product[0].count = totalCount
+  //         let tradeResult = {
+  //           purchase: 0,
+  //           sale: product[0].price,
+  //           count: payload.count
+  //         }
+  //
+  //         dispatch('setTradeResult', tradeResult)
+  //         router.replace('/')
+  //       })
+  //   }
+  // }
 }
 
 export default {
