@@ -16,6 +16,10 @@
         <router-link active-class="active" to="/urun-cikisi" tag='li' class="nav-item">
           <a class="nav-link" href="#">Ürün Çıkışı</a>
         </router-link>
+
+        <router-link active-class="active" to="/manage-categories" tag='li' class="nav-item">
+          <a class="nav-link" href="#">Categories</a>
+        </router-link>
       </ul>
     </div>
   </nav>

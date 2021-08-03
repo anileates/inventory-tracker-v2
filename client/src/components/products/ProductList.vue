@@ -6,7 +6,7 @@
           <h3>Ürün Listesi</h3>
           <hr>
           <table class="table table-hover table-striped table-bordered" v-if="getProducts">
-            <thead>
+            <thead class="text-center">
             <th>id</th>
             <th>Category Name</th>
             <th>Ürün Adı</th>
@@ -39,8 +39,6 @@
 
 <script>
 import {mapGetters} from 'vuex'
-import {getAlertMessage} from "../../store/getters";
-
 
 export default {
   name: "ProductList",
