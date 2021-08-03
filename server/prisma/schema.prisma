@@ -8,12 +8,12 @@ datasource db {
 
 generator client {
   provider = "prisma-client-js"
-  previewFeatures = ["selectRelationCount"] 
+  previewFeatures = ["selectRelationCount", "referentialActions"] 
 }
 
 model Product {
   code       String   @unique @default(uuid())
-  category   Category @relation(fields: [categoryId], references: [id])
+  category   Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
   categoryId Int
   name       String
   stock      Int

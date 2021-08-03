@@ -1,6 +1,6 @@
 import Vue from "vue";
 import {router} from "../../router";
-import {myToast} from "../../myToast";
+import {mySweetAlert} from "../../mySweetAlert";
 
 const state = {
   products: []
@@ -29,6 +29,7 @@ const actions = {
   initApp({commit}) {
     Vue.http.get('http://localhost:8080/api/v1/products')
       .then(response => {
+        state.products = []
         let products = response.body.products
 
         for (let i = 0; i < products.length; i++) {
@@ -43,13 +44,13 @@ const actions = {
         product.code = res.body.productCreated.code
         commit('updateProductList', product)
         router.replace('/')
-        myToast.fire({
+        mySweetAlert.fire({
           icon: 'success',
           title: 'Product succesfully added.'
         })
       }).catch(err => {
         router.replace('/')
-        myToast.fire({
+        mySweetAlert.fire({
           icon: 'error',
           title: 'Something went wrong. Please try again.'
         })
