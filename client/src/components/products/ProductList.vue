@@ -5,7 +5,7 @@
         <div class="card-body">
           <h3>Ürün Listesi</h3>
           <hr>
-          <table class="table table-hover table-striped table-bordered" v-if="getProducts">
+          <table class="table table-hover table-striped table-bordered" v-if="getProducts && !getProducts.length == 0">
             <thead class="text-center">
             <th>id</th>
             <th>Category Name</th>
@@ -55,6 +55,7 @@ export default {
     }
   },
   created(){
+  this.$store.dispatch('initApp')
   }
 }
 </script>

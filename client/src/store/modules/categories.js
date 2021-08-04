@@ -22,6 +22,13 @@ const mutations = {
         state.categories.splice(i, 1)
       }
     }
+  },
+  updateCategoryName(state, category) {
+    for (let i = 0; i < state.categories.length; i++) {
+      if (state.categories[i].id == category.id) {
+        state.categories[i].name = category.name
+      }
+    }
   }
 }
 
@@ -42,10 +49,27 @@ const actions = {
         commit('removeDeletedCategory', category)
         dispatch('initApp')
       }).catch(err => {
+      mySweetAlert.fire({
+        icon: 'error',
+        title: 'Something went wrong. Try again later.'
+      })
+    })
+  },
+  updateCategory({commit, dispatch}, category) {
+    Vue.http.put('http://localhost:8080/api/v1/categories/' + category.id, {name: category.name})
+      .then(res => {
+        let updatedCategory = res.body.updatedCategory
+        commit('updateCategoryName', updatedCategory)
+
         mySweetAlert.fire({
-          icon: 'error',
-          title: 'Something went wrong. Try again later.'
+          icon: 'success',
+          title: 'Category has been updated.'
         })
+      }).catch(err => {
+      mySweetAlert.fire({
+        icon: 'error',
+        title: 'Something went wrong. Try again later.'
+      })
     })
   }
 }
