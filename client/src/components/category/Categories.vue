@@ -3,12 +3,41 @@
     <div class="row">
       <div class="col-12 mb-5 card mt-5 shadow">
         <div class="card-body">
-          <h3>Categories</h3>
+          <h3>
+            Categories
+
+            <transition
+              enter-class=""
+              enter-active-class="animate__animated animate__swing animate__repeat-2"
+              appear
+            >
+              <span
+                key="sa"
+                style="font-size: 1.35rem; cursor: pointer; color: seagreen;"
+                class="float-right mt-2"
+                :class="swing"
+                @click="addNewRow"
+                v-if="!isNewButtonClicked"
+              >Add New
+                    <i class="fas fa-plus-circle"></i>
+            </span>
+
+              <span
+                style="font-size: 1.35rem; cursor: pointer; color: seagreen;"
+                class="float-right mr-2"
+                @click="saveCategory"
+                v-else
+              >
+              Save Category
+            <i class="fas fa-check"></i>
+          </span>
+            </transition>
+          </h3>
+
           <hr/>
-          <table
-            class="table table-hover table-striped table-bordered"
-            v-if="getAllCategories && !getAllCategories.length == 0"
-          >
+
+          <table class="table table-hover table-striped table-bordered"
+                 v-if="getAllCategories && !getAllCategories.length == 0">
             <thead class="text-center">
             <th>Category id</th>
             <th>Category Name</th>
@@ -16,8 +45,29 @@
             <th>Delete</th>
             </thead>
 
-            <tbody>
-            <tr v-for="category in getAllCategories">
+            <tbody name="slide" is="transition-group">
+            <tr v-if="isNewButtonClicked" key="newCategoryRow">
+              <td class="align-middle text-center">
+                Generated automatically.
+              </td>
+              <td class="align-middle text-center">
+                <input
+                  type="text"
+                  class="myInputBox text-center"
+                  v-model="newCategoryName"
+                ></td>
+              <td class="align-middle text-center">None</td>
+              <td class="align-middle text-center">
+                  <span
+                    style="font-size: 1.3rem; color: darkred; cursor: pointer"
+                    @click="cancelNewCategory"
+                  >
+                    <i class="fas fa-times"></i>
+                  </span>
+              </td>
+            </tr>
+
+            <tr :key="index" v-for="(category, index) in getAllCategories">
               <td class="align-middle text-center">
                 <span class="badge badge-info">{{ category.id }}</span>
               </td>
@@ -68,12 +118,52 @@
             </tr>
             </tbody>
           </table>
-          <div class="alert alert-warning" v-else>
-            <strong>Henüz Burada Bir Kayıt Bulamadık</strong>
-            <br/>
-            <small
-            >Kayıt Eklemek için Ürün İşlemleri menüsünden yararlanabilirsiniz
-            </small>
+
+          <div v-else>
+            <div class="alert alert-warning" @mouseenter="isMouseOver = !isMouseOver"
+                 @mouseleave="isMouseOver = !isMouseOver">
+              <strong>There is no record here yet</strong>
+              <br/>
+              <small
+              >Click add new button to get started
+              </small>
+            </div>
+
+            <transition name="fade">
+              <table class="table table-hover table-striped table-bordered" v-if="isNewButtonClicked">
+                <thead class="text-center">
+                <th>Category id</th>
+                <th>Category Name</th>
+                <th>Product Count</th>
+                <th>Delete</th>
+                </thead>
+
+                <tbody>
+                <tr>
+                  <td class="align-middle text-center">
+                    Generated automatically.
+                  </td>
+                  <td class="align-middle text-center">
+                    <input
+                      type="text"
+                      class="myInputBox text-center"
+                      v-model="newCategoryName"
+                    ></td>
+                  <td class="align-middle text-center">None</td>
+                  <td class="align-middle text-center">
+                  <span
+                    style="font-size: 1.3rem; color: darkred; cursor: pointer"
+                    @click="cancelNewCategory"
+                  >
+                    <i class="fas fa-times"></i>
+                  </span>
+                  </td>
+                </tr>
+                </tbody>
+              </table>
+            </transition>
+
+
           </div>
         </div>
       </div>
@@ -83,7 +173,7 @@
 
 <script>
 import {mapGetters} from "vuex";
-import {confirmDeletion} from '../../mySweetAlert'
+import {confirmDeletion, mySweetAlert} from '../../mySweetAlert'
 
 export default {
   name: "Categories",
@@ -91,12 +181,21 @@ export default {
     return {
       isEditMode: false,
       nameBeforeEdit: '',
-      editedName: ''
+      editedName: '',
+      isNewButtonClicked: null,
+      newCategoryName: null,
+      isMouseOver: null
 
     };
   },
   computed: {
     ...mapGetters(["getAllCategories"]),
+    swing: function () {
+      return {
+        'float-right mt-2 animate__animated animate__swing animate__repeat-2': this.isMouseOver,
+        'float-right mt-2': !this.isMouseOver,
+      }
+    },
   },
   methods: {
     editCategory(category) {
@@ -115,6 +214,25 @@ export default {
     cancelChanges() {
       this.isEditMode = false;
     },
+    addNewRow() {
+      this.isNewButtonClicked = !this.isNewButtonClicked
+    },
+    saveCategory() {
+      if (this.newCategoryName == null || this.newCategoryName.trim() === '') {
+        mySweetAlert.fire({
+          icon: 'warning',
+          title: 'Name can not be empty!'
+        })
+      } else {
+        this.isNewButtonClicked = false
+        this.$store.dispatch('saveCategory', this.newCategoryName)
+        this.newCategoryName = null
+      }
+    },
+    cancelNewCategory() {
+      this.isNewButtonClicked = false
+      this.newCategoryName = null
+    }
   }
 };
 </script>
@@ -132,4 +250,65 @@ export default {
   outline: none;
   border-bottom: solid #563f7a;
 }
+
+
+/* New category animation */
+.slide-enter {
+  opacity: 0;
+}
+
+.slide-enter-active {
+  animation: slide-in 1s ease-out forwards;
+  transition: opacity 0.5s;
+}
+
+.slide-leave {
+}
+
+.slide-leave-active {
+  animation: slide-out 1s ease-out forwards;
+  transition: opacity 1s;
+  opacity: 0;
+  position: absolute;
+}
+
+.slide-move {
+  transition: transform 1s;
+}
+
+@keyframes slide-in {
+  from {
+    transform: translateY(-20px);
+  }
+  to {
+    transform: translateY(0px);
+  }
+}
+
+/* New category animation */
+
+
+/* Empty Table */
+.fade-enter {
+  opacity: 0;
+}
+
+.fade-enter-active {
+  animation: slide-in 1s ease-out forwards;
+  transition: opacity 0.5s;
+}
+
+.fade-leave {
+}
+
+.fade-leave-active {
+  animation: slide-out 1s ease-out forwards;
+  transition: opacity 0.5s;
+  opacity: 0;
+}
+
+
+/* Empty Table */
+
+
 </style>

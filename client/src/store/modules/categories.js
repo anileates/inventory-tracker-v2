@@ -14,6 +14,7 @@ const getters = {
 
 const mutations = {
   updateCategoryList(state, category) {
+    // console.log(category)
     state.categories.push(category)
   },
   removeDeletedCategory(state, category) {
@@ -70,6 +71,24 @@ const actions = {
         icon: 'error',
         title: 'Something went wrong. Try again later.'
       })
+    })
+  },
+  saveCategory({commit, dispatch}, categoryName) {
+    Vue.http.post('http://localhost:8080/api/v1/categories/', {category_name: categoryName})
+      .then(res => {
+        Vue.swal.fire(
+          'OK!',
+          'Category has been added.',
+          "success"
+        )
+        let category = res.body.data
+         commit('updateCategoryList', {...category, _count: {products: 0}})
+      }).catch(err => {
+      Vue.swal.fire(
+        'Oopss!',
+        'Something went wrong. Try later.',
+        'error'
+      )
     })
   }
 }
