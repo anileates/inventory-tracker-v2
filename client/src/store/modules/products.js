@@ -12,7 +12,7 @@ const getters = {
   },
   getProduct(state) {
     return key => state.products.filter(element => {
-      return element.key == key
+      return element.code == key
     })
   }
 }
@@ -49,34 +49,40 @@ const actions = {
           title: 'Product succesfully added.'
         })
       }).catch(err => {
-        router.replace('/')
-        mySweetAlert.fire({
-          icon: 'error',
-          title: 'Something went wrong. Please try again.'
-        })
+      router.replace('/')
+      mySweetAlert.fire({
+        icon: 'error',
+        title: 'Something went wrong. Please try again.'
+      })
     })
   },
-  // sellProduct({state, commit, dispatch}, payload) {
-  //   let product = state.products.filter(element => {
-  //     return element.key == payload.key
-  //   })
-  //
-  //   if (product) {
-  //     let totalCount = product[0].count - payload.count
-  //     Vue.http.patch('https://vue-product-c82ad-default-rtdb.europe-west1.firebasedatabase.app/products/' + payload.key + '.json', {count: totalCount})
-  //       .then(res => {
-  //         product[0].count = totalCount
-  //         let tradeResult = {
-  //           purchase: 0,
-  //           sale: product[0].price,
-  //           count: payload.count
-  //         }
-  //
-  //         dispatch('setTradeResult', tradeResult)
-  //         router.replace('/')
-  //       })
-  //   }
-  // }
+  sellProduct({state, commit, dispatch}, payload) {
+    console.log(payload)
+    console.log(state.products)
+    let product = state.products.filter(el => {
+      return el.code == payload.code
+    })
+
+    if (product) {
+      let totalCount = product.count - payload.count
+
+      Vue.http.post('http://localhost:8080/api/v1/products/sell-product/' + payload.code, {stockSold: parseInt(payload.count)})
+        .then(res => {
+          product[0].count = totalCount
+          router.replace('/')
+          mySweetAlert.fire({
+            icon: "success",
+            title: 'The sale is successful.'
+          })
+        }).catch(err => {
+        router.replace('/')
+        mySweetAlert.fire({
+            icon: 'error',
+            title: 'Something went wrong. Try later.'
+          })
+      })
+    }
+  }
 }
 
 export default {

@@ -48,7 +48,30 @@ const updateProduct = asyncErrorWrapper(async (req, res, next) => {
             code: productCode.toString()
         },
         data: req.body
+    })
 
+    return res.status(200).json({
+        success: true,
+        product
+    })
+})
+
+const sellProduct = asyncErrorWrapper(async (req, res, next) => {
+    const {productCode} = req.params
+    const {stockSold} = req.body
+
+    const product = await prisma.product.updateMany({
+        where: {
+            code: productCode.toString(),
+            stock: {
+                gte: parseInt(stockSold)
+            }
+        },
+        data: {
+            stock: {
+                decrement: stockSold
+            }
+        }
     })
 
     return res.status(200).json({
@@ -106,5 +129,6 @@ module.exports = {
     getProduct,
     updateProduct,
     deleteProduct,
-    getAllOrSearchProduct
+    getAllOrSearchProduct,
+    sellProduct
 }

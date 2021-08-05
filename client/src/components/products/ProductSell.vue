@@ -14,14 +14,14 @@
           <hr>
           <div class="form-group">
             <label>Ürün Adı</label>
-            <select class="form-control" v-model="selectedProduct" @change="selectProduct">
+            <select class="form-control" v-model="selectedProductId" @change="selectProduct">
               <option value="" disabled selected>Bir ürün seçin...</option>
               <option
                 v-for="product in getProducts"
                 :disabled="product.stock == 0"
-                :value="product.key"
-                v-if="product.title"
-              >{{ product.title }}
+                :value="product.code"
+                v-if="product.name"
+              >{{ product.name }}
               </option>
             </select>
           </div>
@@ -53,8 +53,7 @@
           <form class="form-group needs-validation" novalidate>
             <div class="invalid">
               <label for="validationCustom03" class="form-label">Adet</label>
-              <input type="text" :class="isAmountValid" id="validationCustom03" v-model="amount"
-                     placeholder="Ürün adetini giriniz.." required>
+              <input type="number" min="0" step="1" :class="isAmountValid" id="validationCustom03" v-model="amount" placeholder="Ürün adetini giriniz.." required>
               <div class="invalid-feedback">
                 Yetersiz stok!
               </div>
@@ -75,7 +74,7 @@ export default {
   name: "ProductSell",
   data() {
     return {
-      selectedProduct: null,
+      selectedProductId: null,
       product: null,
       amount: null,
       isSaveButtonClicked: false
@@ -95,8 +94,8 @@ export default {
       }
     },
     saveEnabled() {
-      if (this.selectedProduct !== null && parseInt(this.amount) > 0) {
-        return parseInt(this.amount) > parseInt(this.product.count)
+      if (this.selectedProductId !== null && parseInt(this.amount) > 0) {
+        return parseInt(this.amount) > parseInt(this.product.stock)
       } else {
         return true
       }
@@ -108,20 +107,20 @@ export default {
         }
       } else {
         return {
-          'form-control': (parseInt(this.amount) <= parseInt(this.product.count)),
-          'form-control is-invalid': (parseInt(this.amount) > parseInt(this.product.count))
+          'form-control': (parseInt(this.amount) <= parseInt(this.product.stock)),
+          'form-control is-invalid': (parseInt(this.amount) > parseInt(this.product.stock))
         }
       }
     }
   },
   methods: {
     selectProduct() {
-      this.product = this.$store.getters.getProduct(this.selectedProduct)[0]
+      this.product = this.$store.getters.getProduct(this.selectedProductId)[0]
     },
     sellProduct() {
       this.isSaveButtonClicked = true
       let product = {
-        key: this.selectedProduct,
+        code: this.selectedProductId,
         count: this.amount
       }
 
@@ -129,7 +128,7 @@ export default {
     }
   },
   beforeRouteLeave(to, from, next) {
-    if ((this.selectedProduct !== null || this.amount > 0) && this.saveButtonClicked) {
+    if ((this.selectedProductId !== null || this.amount > 0) && this.saveButtonClicked) {
       if (confirm('Kaydedilmemiş değişiklikler var. Yine de çıkmak istiyor musunuz?')) {
         next()
       } else {
