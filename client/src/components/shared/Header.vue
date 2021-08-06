@@ -4,17 +4,17 @@
       to="/"
       tag="a"
       class="navbar-brand">
-      Ürün Listesi
+      Product List
     </router-link>
 
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav mr-auto">
         <router-link active-class="active" to="/urun-islemleri" tag='li' class="nav-item">
-          <a class="nav-link" href="#">Ürün Ekle</a>
+          <a class="nav-link" href="#">Add Product</a>
         </router-link>
 
         <router-link active-class="active" to="/urun-cikisi" tag='li' class="nav-item">
-          <a class="nav-link" href="#">Ürün Çıkışı</a>
+          <a class="nav-link" href="#">Sell Product</a>
         </router-link>
 
         <router-link active-class="active" to="/manage-categories" tag='li' class="nav-item">

@@ -3,16 +3,16 @@
     <div class="row">
       <div class="col-12 mb-5 card mt-5 shadow">
         <div class="card-body">
-          <h3>Ürün Listesi</h3>
+          <h3>Product List</h3>
           <hr>
           <table class="table table-hover table-striped table-bordered" v-if="getProducts && !getProducts.length == 0">
             <thead class="text-center">
             <th>id</th>
             <th>Category Name</th>
-            <th>Ürün Adı</th>
-            <th>Adet</th>
-            <th>Fiyat</th>
-            <th>Açıklama</th>
+            <th>Product Name</th>
+            <th>Stock</th>
+            <th>Unit Price</th>
+            <th>Description</th>
             </thead>
             <tbody>
             <tr v-for="product in getProducts">
@@ -26,9 +26,9 @@
             </tbody>
           </table>
           <div class="alert alert-warning" v-else>
-            <strong>Henüz Burada Bir Kayıt Bulamadık</strong>
+            <strong>There is no record here yet.</strong>
             <br>
-            <small>Kayıt Eklemek için Ürün İşlemleri menüsünden yararlanabilirsiniz
+            <small>You can use Add Product Tab to add new record.
             </small>
           </div>
         </div>

@@ -10,12 +10,12 @@
     <div class="row">
       <div class="col-6 offset-3 pt-3 card mt-5 shadow">
         <div class="card-body">
-          <h3>Ürün Çıkışı</h3>
+          <h3>Sell Product</h3>
           <hr>
           <div class="form-group">
-            <label>Ürün Adı</label>
+            <label>Product Name</label>
             <select class="form-control" v-model="selectedProductId" @change="selectProduct">
-              <option value="" disabled selected>Bir ürün seçin...</option>
+              <option value="" disabled selected>Select A Product...</option>
               <option
                 v-for="product in getProducts"
                 :disabled="product.stock == 0"
@@ -32,8 +32,8 @@
                 <div class="row">
                   <div class="col-12 text-center">
                     <div class="mb-3">
-                      <span class="badge badge-info">Stok: {{ product.stock }}</span>
-                      <span class="badge badge-primary">Fiyat: {{ product.unitPrice | currency }}</span>
+                      <span class="badge badge-info">Stock: {{ product.stock }}</span>
+                      <span class="badge badge-primary">Unit Price: {{ product.unitPrice | currency }}</span>
                     </div>
                     <p class="border border-warning p-2 text-secondary">
                       {{ product.description }}
@@ -52,15 +52,15 @@
 
           <form class="form-group needs-validation" novalidate>
             <div class="invalid">
-              <label for="validationCustom03" class="form-label">Adet</label>
-              <input type="number" min="0" step="1" :class="isAmountValid" id="validationCustom03" v-model="amount" placeholder="Ürün adetini giriniz.." required>
+              <label for="validationCustom03" class="form-label">Sold Quantity</label>
+              <input type="number" min="0" step="1" :class="isAmountValid" id="validationCustom03" v-model="amount" placeholder="Enter Count..." required>
               <div class="invalid-feedback">
                 Yetersiz stok!
               </div>
             </div>
           </form>
           <hr>
-          <button class="btn btn-primary" :disabled="saveEnabled" @click="sellProduct">Kaydet</button>
+          <button class="btn btn-primary" :disabled="saveEnabled" @click="sellProduct">Save</button>
         </div>
       </div>
     </div>
