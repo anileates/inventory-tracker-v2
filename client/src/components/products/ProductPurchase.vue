@@ -28,11 +28,11 @@
           </div>
           <div class="form-group">
             <label>Count</label>
-            <input v-model="product.stock" type="number" class="form-control" placeholder="Enter Purchase Count">
+            <input v-model="product.stock" type="number" min="0" step="1" class="form-control" placeholder="Enter Purchase Count">
           </div>
           <div class="form-group">
             <label>Unit Price</label>
-            <input v-model="product.unitPrice" type="number" class="form-control" placeholder="Enter Unit Price">
+            <input v-model="product.unitPrice" type="number" min="0" step="1" class="form-control" placeholder="Enter Unit Price">
           </div>
           <div class="form-group">
             <label>Image Url</label>

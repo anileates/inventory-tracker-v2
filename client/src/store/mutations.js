@@ -1,5 +1,5 @@
 export const updateTradeResults = (state, payload) => {
-    if(payload.count){
+  if(payload.count){ // There won't be count data when we fetch the trade results from DB.
         state.purchase += parseFloat(payload.purchase) * parseInt(payload.count)
         state.sale += parseFloat(payload.sale) * parseInt(payload.count)
     }else{
@@ -7,5 +7,5 @@ export const updateTradeResults = (state, payload) => {
         state.sale += parseFloat(payload.sale)
     }
 
-    state.balance += parseFloat(state.sale) - parseFloat(state.purchase)
+    state.balance = parseFloat(state.sale) - parseFloat(state.purchase)
 }

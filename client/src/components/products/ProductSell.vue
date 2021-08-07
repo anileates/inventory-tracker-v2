@@ -55,7 +55,7 @@
               <label for="validationCustom03" class="form-label">Sold Quantity</label>
               <input type="number" min="0" step="1" :class="isAmountValid" id="validationCustom03" v-model="amount" placeholder="Enter Count..." required>
               <div class="invalid-feedback">
-                Yetersiz stok!
+                Insufficient Stock!
               </div>
             </div>
           </form>

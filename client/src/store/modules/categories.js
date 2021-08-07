@@ -14,7 +14,6 @@ const getters = {
 
 const mutations = {
   updateCategoryList(state, category) {
-    // console.log(category)
     state.categories.push(category)
   },
   removeDeletedCategory(state, category) {

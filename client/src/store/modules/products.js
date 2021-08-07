@@ -1,6 +1,7 @@
 import Vue from "vue";
 import {router} from "../../router";
 import {mySweetAlert} from "../../mySweetAlert";
+import {parse} from "vue-resource/src/lib/url-template";
 
 const state = {
   products: []
@@ -37,12 +38,19 @@ const actions = {
         }
       })
   },
-
   saveProduct({dispatch, commit, state}, product) {
     Vue.http.post("http://localhost:8080/api/v1/products/", product)
       .then((res) => {
         product.code = res.body.productCreated.code
         commit('updateProductList', product)
+
+        let tradeResult = {
+          purchase: product.unitPrice,
+          sale: 0,
+          count: product.stock
+        }
+
+        dispatch('setTradeResult', tradeResult)
         router.replace('/')
         mySweetAlert.fire({
           icon: 'success',
@@ -57,14 +65,16 @@ const actions = {
     })
   },
   sellProduct({state, commit, dispatch}, payload) {
-    console.log(payload)
-    console.log(state.products)
     let product = state.products.filter(el => {
       return el.code == payload.code
     })
 
     if (product) {
       let totalCount = product.count - payload.count
+      let tradeResult = {
+        sale: parseInt(payload.count) * product[0].unitPrice,
+        purchase: 0
+      }
 
       Vue.http.post('http://localhost:8080/api/v1/products/sell-product/' + payload.code, {stockSold: parseInt(payload.count)})
         .then(res => {
@@ -74,12 +84,14 @@ const actions = {
             icon: "success",
             title: 'The sale is successful.'
           })
+
+          dispatch('setTradeResult', tradeResult)
         }).catch(err => {
         router.replace('/')
         mySweetAlert.fire({
-            icon: 'error',
-            title: 'Something went wrong. Try later.'
-          })
+          icon: 'error',
+          title: 'Something went wrong. Try later.'
+        })
       })
     }
   }

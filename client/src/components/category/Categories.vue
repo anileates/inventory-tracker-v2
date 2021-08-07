@@ -196,7 +196,6 @@ export default {
   computed: {
     ...mapGetters(["getAllCategories"]),
     swing: function () {
-      console.log(this.isMouseOver);
       return {
         "float-right mt-2 animate__animated animate__swing animate__repeat-2":
           this.isMouseOver,
