@@ -22,6 +22,16 @@ const getters = {
 const mutations = {
   updateProductList(state, product) {
     state.products.push(product)
+  },
+  removeProductFromList(state, productId) {
+    state.products.splice(state.products.findIndex(el => el.code == productId), 1)
+  },
+  updateProduct(state, product) {
+    for (let i = 0; i < state.products.length; i++) {
+      if (state.products[i].code == product.code) {
+        state.products[i] = product
+      }
+    }
   }
 }
 
@@ -94,6 +104,34 @@ const actions = {
         })
       })
     }
+  },
+  deleteProduct({state, commit, dispatch}, productId) {
+    Vue.http.delete('http://localhost:8080/api/v1/products/' + productId)
+      .then(res => {
+        mySweetAlert.fire({
+          icon: "success",
+          title: 'The sale is successful.'
+        })
+        commit('removeProductFromList', productId)
+      }).catch(err => {
+      mySweetAlert.fire({
+        icon: 'error',
+        title: 'Something went wrong. Try later.'
+      })
+    })
+  },
+  updateProduct({state, commit, dispatch}, product){
+    console.log('action product', product)
+
+    Vue.http.put("http://localhost:8080/api/v1/products/" + product.code, product)
+      .then(res => {
+        commit('updateProduct', product)
+
+        mySweetAlert.fire({
+          icon: 'success',
+          title: 'Product has been successfully edited.'
+        })
+      })
   }
 }
 

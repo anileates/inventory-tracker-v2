@@ -178,7 +178,7 @@
 
 <script>
 import { mapGetters } from "vuex";
-import { confirmDeletion, mySweetAlert } from "../../mySweetAlert";
+import { confirmCategoryDeletion, mySweetAlert } from "../../mySweetAlert";
 
 export default {
   name: "Categories",
@@ -211,14 +211,21 @@ export default {
       this.editedName = category.name;
     },
     deleteCategory(category) {
-      confirmDeletion(category);
+      confirmCategoryDeletion(category);
     },
     applyChanges(categoryId) {
-      this.isEditMode = false;
-      this.$store.dispatch("updateCategory", {
-        id: categoryId,
-        name: this.editedName,
-      });
+      if(this.editedName == null || this.editedName.trim() === ""){
+        mySweetAlert.fire({
+          icon: "warning",
+          title: "Name can not be empty!",
+        });
+      }else {
+        this.isEditMode = false;
+        this.$store.dispatch("updateCategory", {
+          id: categoryId,
+          name: this.editedName.trim(),
+        });
+      }
     },
     cancelChanges() {
       this.isEditMode = false;

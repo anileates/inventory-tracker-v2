@@ -13,7 +13,7 @@
           <h3>Sell Product</h3>
           <hr>
           <div class="form-group">
-            <label>Product Name</label>
+            <label>Product</label>
             <select class="form-control" v-model="selectedProductId" @change="selectProduct">
               <option value="" disabled selected>Select A Product...</option>
               <option
@@ -52,7 +52,7 @@
 
           <form class="form-group needs-validation" novalidate>
             <div class="invalid">
-              <label for="validationCustom03" class="form-label">Sold Quantity</label>
+              <label for="validationCustom03" class="form-label">Quantity Sold</label>
               <input type="number" min="0" step="1" :class="isAmountValid" id="validationCustom03" v-model="amount" placeholder="Enter Count..." required>
               <div class="invalid-feedback">
                 Insufficient Stock!

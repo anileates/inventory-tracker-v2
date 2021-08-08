@@ -29,7 +29,7 @@ export const mySweetAlert = Vue.swal.mixin(mixinOptions)
 const swalWithBootstrapButtons = Vue.swal.mixin(confirmOptions)
 
 
-export const confirmDeletion = (category) => {
+export const confirmCategoryDeletion = (category) => {
   swalWithBootstrapButtons.fire({
     title: 'Are you sure?',
     text: "All products in this category will be lost. You won't be able to revert this!",
@@ -55,8 +55,35 @@ export const confirmDeletion = (category) => {
       )
     }
   })
+}
 
+export const confirmProductDeletion = (productId) => {
+  swalWithBootstrapButtons.fire({
+    title: 'Are you sure?',
+    text: "Product will be lost. You won't be able to revert this!",
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonText: 'Yes, delete it!',
+    cancelButtonText: 'No, cancel!',
+    reverseButtons: true
+  }).then((result) => {
+    if (result.isConfirmed) {
+      swalWithBootstrapButtons.fire(
+        'Deleted!',
+        'Category has been deleted.',
+        'success'
+      )
 
+      store.dispatch('deleteProduct', productId)
+
+    } else if (result.dismiss === Vue.swal.DismissReason.cancel) {
+      swalWithBootstrapButtons.fire(
+        'Cancelled',
+        'Product is safe!',
+        'error'
+      )
+    }
+  })
 }
 
 

@@ -43,11 +43,19 @@ const getProduct = asyncErrorWrapper(async (req, res, next) => {
 const updateProduct = asyncErrorWrapper(async (req, res, next) => {
     const {productCode} = req.params
 
+    let productUpdated = req.body
+    //Data manipulation to avoid prisma type error
+    productUpdated.stock = parseInt(productUpdated.stock)
+    productUpdated.unitPrice = parseInt(productUpdated.unitPrice)
+    productUpdated.categoryId = productUpdated.category.id
+    delete productUpdated.category
+
+    console.log(productUpdated)
     const product = await prisma.product.update({
         where: {
             code: productCode.toString()
         },
-        data: req.body
+        data: productUpdated
     })
 
     return res.status(200).json({
@@ -106,14 +114,28 @@ const getAllOrSearchProduct = asyncErrorWrapper(async (req, res, next) => {
                     contains: searchKey
                 }
             },
-            include: {
-                category: true
+            select: {
+                categoryId: false,
+                category: true,
+                name: true,
+                stock: true,
+                unitPrice: true,
+                description: true,
+                imageUrl: true,
+                code: true
             }
         })
     } else {
         products = await prisma.product.findMany({
-            include: {
-                category: true
+            select: {
+                categoryId: false,
+                category: true,
+                name: true,
+                stock: true,
+                unitPrice: true,
+                description: true,
+                imageUrl: true,
+                code: true
             }
         });
     }
