@@ -1,6 +1,6 @@
 # inventory-tracker
 
-> A Inventory tracking app with vue and node
+> An Inventory tracking app with vue and node
 
 ## Build Setup
 
