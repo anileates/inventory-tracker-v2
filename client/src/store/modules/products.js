@@ -49,30 +49,42 @@ const actions = {
       })
   },
   saveProduct({dispatch, commit, state}, product) {
-    Vue.http.post("http://localhost:8080/api/v1/products/", product)
-      .then((res) => {
-        product.code = res.body.productCreated.code
-        commit('updateProductList', product)
+    Vue.http.get("http://localhost:8080/api/v1/products/" + product.code)
+      .then(res => {
+        // Check if product already exists
+        if(res.body.product){
+          product.stock = parseInt(res.body.product.stock) + parseInt(product.stock)
+          dispatch('updateProduct', product)
+
+          router.replace('/')
+        }
+        else{
+          Vue.http.post("http://localhost:8080/api/v1/products/", product)
+            .then((res) => {
+              product.code = res.body.productCreated.code
+              commit('updateProductList', product)
+
+              router.replace('/')
+              mySweetAlert.fire({
+                icon: 'success',
+                title: 'Product succesfully added.'
+              })
+            }).catch(err => {
+            router.replace('/')
+            mySweetAlert.fire({
+              icon: 'error',
+              title: 'Something went wrong. Please try again.'
+            })
+          })
+        }
 
         let tradeResult = {
-          purchase: product.unitPrice,
+          purchase: product.unitPurchasePrice,
           sale: 0,
           count: product.stock
         }
-
         dispatch('setTradeResult', tradeResult)
-        router.replace('/')
-        mySweetAlert.fire({
-          icon: 'success',
-          title: 'Product succesfully added.'
-        })
-      }).catch(err => {
-      router.replace('/')
-      mySweetAlert.fire({
-        icon: 'error',
-        title: 'Something went wrong. Please try again.'
       })
-    })
   },
   sellProduct({state, commit, dispatch}, payload) {
     let product = state.products.filter(el => {
@@ -82,7 +94,7 @@ const actions = {
     if (product) {
       let totalCount = product.count - payload.count
       let tradeResult = {
-        sale: parseInt(payload.count) * product[0].unitPrice,
+        sale: parseInt(payload.count) * product[0].unitSalePrice,
         purchase: 0
       }
 
@@ -121,8 +133,6 @@ const actions = {
     })
   },
   updateProduct({state, commit, dispatch}, product){
-    console.log('action product', product)
-
     Vue.http.put("http://localhost:8080/api/v1/products/" + product.code, product)
       .then(res => {
         commit('updateProduct', product)

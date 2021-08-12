@@ -11,7 +11,8 @@
             <th>Category Name</th>
             <th>Product Name</th>
             <th>Stock</th>
-            <th>Unit Price</th>
+<!--            <th>Unit Purchase Price</th>-->
+            <th>Unit Sale Price</th>
             <th>Description</th>
             <th>Manage</th>
             </thead>
@@ -42,7 +43,7 @@
                          v-model="productUpdated.stock"/>
                 </td>
                 <td class="align-middle text-center" style="width: 120px;">
-                  <input type="number" class="myInputBox text-center" v-model="productUpdated.unitPrice"
+                  <input type="number" class="myInputBox text-center" v-model="productUpdated.unitSalePrice"
                          @keydown="checkNumberOnly"/>
                 </td>
                 <td class="align-middle text-center">
@@ -68,7 +69,7 @@
                 <td class="align-middle text-center" style="width: 120px" :class="getStockAlert(product.stock)">
                   {{ product.stock }}
                 </td>
-                <td class="align-middle text-center" style="width: 120px">{{ product.unitPrice | currency }}</td>
+                <td class="align-middle text-center" style="width: 120px">{{ product.unitSalePrice | currency }}</td>
                 <td class="align-middle text-center">{{ product.description }}</td>
                 <td class="align-middle text-center">
                 <span style="font-size: 1.3rem; cursor: pointer" class="mr-2" @click="editProduct(product)">
@@ -133,7 +134,7 @@ export default {
       this.productUpdated = null
     },
     saveChanges() {
-      if (this.productUpdated.name.trim().length > 0 && this.productUpdated.stock > 0 && this.productUpdated.unitPrice >= 0
+      if (this.productUpdated.name.trim().length > 0 && this.productUpdated.stock > 0 && this.productUpdated.unitSalePrice >= 0
         && this.productUpdated.description.trim().length > 0 && this.productUpdated.category) {
 
         this.$store.dispatch('updateProduct', this.productUpdated)

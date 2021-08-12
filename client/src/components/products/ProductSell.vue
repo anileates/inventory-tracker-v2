@@ -33,7 +33,9 @@
                   <div class="col-12 text-center">
                     <div class="mb-3">
                       <span class="badge badge-info">Stock: {{ product.stock }}</span>
-                      <span class="badge badge-primary">Unit Price: {{ product.unitPrice | currency }}</span>
+                      <span class="badge badge-primary">Unit Purchase Price: {{ product.unitPurchasePrice | currency }}</span>
+                      <span class="badge badge-warning">Unit Sale Price: {{ product.unitSalePrice | currency }}</span>
+
                     </div>
                     <p class="border border-warning p-2 text-secondary">
                       {{ product.description }}
