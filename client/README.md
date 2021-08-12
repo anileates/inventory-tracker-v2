@@ -19,7 +19,7 @@ npm run dev
 operable program or batch file. 
 
 > npm install --global cross-env
-> Remove node_modules, then run npm 
+> Remove node_modules, then run npm install
 > npm run dev
 
 ```
