@@ -3,14 +3,15 @@ const prisma = require('../../prisma/myPrisma')
 const {search} = require('../routes/productRouter')
 
 const addNewProduct = asyncErrorWrapper(async (req, res, next) => {
-    const {categoryId, name, stock, unitPrice, description, imageUrl} = req.body
+    const {categoryId, name, stock, unitPurchasePrice, unitSalePrice, description, imageUrl} = req.body
 
     const productCreated = await prisma.product.create({
         data: {
             name,
             categoryId: parseInt(categoryId),
             stock: parseInt(stock),
-            unitPrice: parseFloat(unitPrice),
+            unitPurchasePrice: parseFloat(unitPurchasePrice),
+            unitSalePrice: parseFloat(unitSalePrice),
             description,
             imageUrl
         }
@@ -46,11 +47,11 @@ const updateProduct = asyncErrorWrapper(async (req, res, next) => {
     let productUpdated = req.body
     //Data manipulation to avoid prisma type error
     productUpdated.stock = parseInt(productUpdated.stock)
-    productUpdated.unitPrice = parseInt(productUpdated.unitPrice)
+    productUpdated.unitPurchasePrice = parseInt(productUpdated.unitPurchasePrice)
+    productUpdated.unitSalePrice = parseInt(productUpdated.unitSalePrice)
     productUpdated.categoryId = productUpdated.category.id
     delete productUpdated.category
 
-    console.log(productUpdated)
     const product = await prisma.product.update({
         where: {
             code: productCode.toString()
@@ -119,7 +120,8 @@ const getAllOrSearchProduct = asyncErrorWrapper(async (req, res, next) => {
                 category: true,
                 name: true,
                 stock: true,
-                unitPrice: true,
+                unitSalePrice: true,
+                unitPurchasePrice: true,
                 description: true,
                 imageUrl: true,
                 code: true
@@ -132,7 +134,8 @@ const getAllOrSearchProduct = asyncErrorWrapper(async (req, res, next) => {
                 category: true,
                 name: true,
                 stock: true,
-                unitPrice: true,
+                unitSalePrice: true,
+                unitPurchasePrice: true,
                 description: true,
                 imageUrl: true,
                 code: true

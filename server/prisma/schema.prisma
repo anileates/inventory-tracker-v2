@@ -17,7 +17,8 @@ model Product {
   categoryId Int
   name       String
   stock      Int
-  unitPrice  Float
+  unitPurchasePrice  Float
+  unitSalePrice  Float
   description String
   imageUrl String
 }

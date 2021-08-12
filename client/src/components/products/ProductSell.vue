@@ -7,8 +7,8 @@
       </div>
     </div>
 
-    <div class="row">
-      <div class="col-6 offset-3 pt-3 card mt-5 shadow">
+    <div class="row" style="margin-bottom: 50px">
+      <div class="col-6 offset-3 pt-3 card mt-5 mb-5 shadow">
         <div class="card-body">
           <h3>Sell Product</h3>
           <hr>

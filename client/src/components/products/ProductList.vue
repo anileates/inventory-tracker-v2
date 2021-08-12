@@ -98,7 +98,7 @@
 
 <script>
 import {mapGetters} from 'vuex'
-import {confirmProductDeletion, mySweetAlert} from "../../mySweetAlert";
+import {confirmProductDeletion, confirmProductUpdate, mySweetAlert} from "../../mySweetAlert";
 
 export default {
   name: "ProductList",

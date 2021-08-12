@@ -110,7 +110,7 @@ const actions = {
       .then(res => {
         mySweetAlert.fire({
           icon: "success",
-          title: 'The sale is successful.'
+          title: 'Product successfully deleted.'
         })
         commit('removeProductFromList', productId)
       }).catch(err => {
