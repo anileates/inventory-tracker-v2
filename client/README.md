@@ -12,7 +12,7 @@ npm install
 npm run dev
 ```
 
-## You may get this errors
+## You may get these errors
 
 ``` bash
 'cross-env' is not recognized as an internal or external command,
